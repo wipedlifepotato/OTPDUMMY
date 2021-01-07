@@ -2,7 +2,7 @@ package com.livingstonei2p.otpdummy;
 
 import java.io.*;
 import java.nio.charset.Charset;
-import org.apache.commons.codec.binary.Base64;
+import android.util.Base64;
 
 public class OTP {
     protected File mKeyFile;
@@ -27,7 +27,7 @@ public class OTP {
 
         byte[] messageArray;
         if (isEncrypted) {
-            messageArray = Base64.decodeBase64(message);
+            messageArray = Base64.decode(message,Base64.DEFAULT);
         }else messageArray = (byte[])message.getBytes(Charset.defaultCharset() );
         byte[] cryptedMessage = new byte[messageArray.length+1];
 
@@ -40,7 +40,7 @@ public class OTP {
         i.close();
         this.offset = offset + x;
         if(isEncrypted) return new String(cryptedMessage, "UTF-8");
-        return Base64.encodeBase64String(cryptedMessage);
+        return Base64.encodeToString(cryptedMessage, 0, cryptedMessage.length, Base64.DEFAULT);
     }
     public String doCryptDecrypt(String message) throws FileNotFoundException, IOException{
         return doCryptDecrypt(message, false);

@@ -42,10 +42,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICKFILE_RESULT_CODE && resultCode == Activity.RESULT_OK){
-            Uri content_describer = data.getData();
-            mKeyFilePath = new String(  getPath(content_describer) );
+        try {
+            super.onActivityResult(requestCode, resultCode, data);
+            if (requestCode == PICKFILE_RESULT_CODE && resultCode == Activity.RESULT_OK) {
+                Uri content_describer = data.getData();
+                mKeyFilePath = new String(getPath(content_describer));
+            }
+        }catch(Throwable exc){
+            System.out.println("ERROR: onActivityResult;");
         }
     }
     @Override
@@ -68,20 +72,23 @@ public class MainActivity extends AppCompatActivity {
             //Buttons
         buttonDecrypt.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                toDecrypt=true;
-                buttonEncrypt.performClick();
-                String data=encryptedDecrypted.getText().toString();
-                encryptedDecrypted.setText( data.substring(0, data.length() - 2) );
+                try {
+                    toDecrypt = true;
+                    buttonEncrypt.performClick();
+                    String data = encryptedDecrypted.getText().toString();
+                    encryptedDecrypted.setText(data.substring(0, data.length() - 2));
+                }catch(Throwable exc){
+                    encryptedDecrypted.setText( "Error: "+exc.toString() );
+                }
             }
         });
         buttonEncrypt.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
-                if (mKeyFilePath == null){
-                    encryptedDecrypted.setText( "Error: select your keyFile" );
-                    return;
-                }
                 try {
+                    if (mKeyFilePath == null){
+                        encryptedDecrypted.setText( "Error: select your keyFile" );
+                        return;
+                    }
                     int localOffset = Integer.parseInt( offset.getText().toString() );
 
                     OTP crypter = new OTP(mKeyFilePath);
@@ -98,6 +105,8 @@ public class MainActivity extends AppCompatActivity {
                     encryptedDecrypted.setText( "Error: "+exception.toString() );
                 }catch(NumberFormatException exception){
                     encryptedDecrypted.setText( "Error: "+exception.toString() );
+                }catch(Throwable exc){
+                    encryptedDecrypted.setText( "Error: "+exc.toString() );
                 }
 
             }
