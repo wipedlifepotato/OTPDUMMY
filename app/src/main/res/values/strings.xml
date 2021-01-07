@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">OTPDummy</string>
+    <string name="submit">Encrypt</string>
+    <string name="encryptedDecrypted">Encrypted/Decrypted</string>
+    <string name="toEncrypt">Your Message</string>
+    <string name="keyfile">Select KeyFile</string>
+    <string name="decrypt">decrypt</string>
+</resources>
