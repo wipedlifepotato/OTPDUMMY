@@ -1,0 +1,1 @@
+OneTimePad cryptography app. Encrypt/Decrypt your text by a key file.
